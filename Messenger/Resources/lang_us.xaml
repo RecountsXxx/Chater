@@ -1,0 +1,62 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:v="clr-namespace:System;assembly=netstandard">
+
+
+    <v:String x:Key="m_Title">Chater</v:String>
+    <v:String x:Key="m_username">Username</v:String>
+    <v:String x:Key="m_newUsername">New username</v:String>
+    <v:String x:Key="m_password">Password</v:String>
+    <v:String x:Key="m_newPassword">New password</v:String>
+    <v:String x:Key="m_theme">Theme</v:String>
+    <v:String x:Key="m_lightTheme">Light</v:String>
+    <v:String x:Key="m_darkTheme">Dark</v:String>
+    <v:String x:Key="m_language">Language</v:String>
+    <v:String x:Key="m_englishLanguage">English</v:String>
+    <v:String x:Key="m_ukrainianLanguage">Ukrainian</v:String>
+    <v:String x:Key="m_rememberMe">Remember me</v:String>
+    <v:String x:Key="m_clearCache">Clear cache</v:String>
+    <v:String x:Key="m_unlock">Unlock</v:String>
+    <v:String x:Key="m_exitAccount">Exit in account</v:String>
+
+
+    <v:String x:Key="m_addFriend">Add friend</v:String>
+    <v:String x:Key="m_friendName">Username friend</v:String>
+    <v:String x:Key="m_add">Add</v:String>
+    <v:String x:Key="m_mainPage">Main page</v:String>
+    <v:String x:Key="m_searchChat">Search chat</v:String>
+    <v:String x:Key="m_friend">Friends</v:String>
+    <v:String x:Key="m_requests">Requests</v:String>
+    <v:String x:Key="m_login">Sign in</v:String>
+    <v:String x:Key="m_register">Sign up</v:String>
+    <v:String x:Key="m_sendMessage">Text message</v:String>
+    <v:String x:Key="m_yourSaved">Your saved</v:String>
+    <v:String x:Key="m_saved">Saved</v:String>
+    <v:String x:Key="m_selectChat">Select a chat to start messaging</v:String>
+
+    
+    <v:String x:Key="m_youChangeUsername">You change username!</v:String>
+    <v:String x:Key="m_userIsContains">User is contains</v:String>
+    <v:String x:Key="m_tooLowUsername">Too low length username</v:String>
+    <v:String x:Key="m_tooLowPassword">Too low length password</v:String>
+    <v:String x:Key="m_youChangePassword">You change password!</v:String>
+    <v:String x:Key="m_cacheCleaned">Cache cleaned!</v:String>
+    <v:String x:Key="m_youSendRequest">You sent request to accept</v:String>
+    <v:String x:Key="m_userBlocked">This is user blocked you! Or you blocked this user!</v:String>
+    <v:String x:Key="m_usernameIsNotFound">Username is not found!</v:String>
+    <v:String x:Key="m_wait">"Wait, soo more message per second"</v:String>
+    <v:String x:Key="m_youHaveMessage">"You've got a message on - "</v:String>
+    <v:String x:Key="m_sooFast">"Soo fast, wait..."</v:String>
+    <v:String x:Key="m_chatCleaned">"Chat his cleaned!"</v:String>
+    <v:String x:Key="m_shutdown">"Server on shutdown!"</v:String>
+    <v:String x:Key="m_noEthernet">"No internet connection!"</v:String>
+    <v:String x:Key="m_waiting">"Waiting..."</v:String>
+    <v:String x:Key="m_succesfull">"Sucsesfull!"</v:String>
+    <v:String x:Key="m_longFields">"Soo long username or password!"</v:String>
+    <v:String x:Key="m_enterOtherFields">"Enter other field and lenght more 3"</v:String>
+    <v:String x:Key="m_dontEnterSymbol">"Dont enter this symbol \" \' \" and Space"</v:String>
+    <v:String x:Key="m_invalidFields">"Invalid login or username!"</v:String>
+    <v:String x:Key="m_audio">Audio message</v:String>
+    <v:String x:Key="m_zip">Zip file</v:String>
+
+    <v:String x:Key="m_youAlreadySended">You already sended request this user</v:String>
+</ResourceDictionary>

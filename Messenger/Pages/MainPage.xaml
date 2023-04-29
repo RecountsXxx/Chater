@@ -1,0 +1,16 @@
+﻿<Page x:Class="Messenger.Pages.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Messenger.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="505" d:DesignWidth="620"
+      Title="MainPage" ShowsNavigationUI="False">
+
+    <Grid Background="{StaticResource ThirtyBackgroundColor}">
+        <Border Width="290" Height="35" Background="{StaticResource SecundaryBackgroundColor}" Opacity="0.8" CornerRadius="8">
+            <Label Foreground="{StaticResource PrimaryTextColor}" Content="{DynamicResource m_selectChat}" FontFamily="cascadia code" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="13"></Label>
+        </Border>
+    </Grid>
+</Page>

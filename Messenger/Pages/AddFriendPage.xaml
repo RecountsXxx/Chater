@@ -1,0 +1,24 @@
+﻿<Page x:Class="Messenger.Pages.AddFriendPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Messenger.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="505" d:DesignWidth="620"
+      Title="AddFriendPage" ShowsNavigationUI="False">
+
+    <Grid Background="{StaticResource ThirtyBackgroundColor}">
+
+
+        <Border Background="{StaticResource SecundaryBackgroundColor}" CornerRadius="45" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid>
+                <Label  FontSize="18" Margin="25,10,120,124" Foreground="{StaticResource PrimaryTextColor}" Content="{DynamicResource m_addFriend}"/>
+                <TextBox  x:Name="FriendNameTextBox" Tag="{DynamicResource m_friendName}" Margin="0,55,0,0" Height="30" Padding="5" BorderThickness="1" BorderBrush="{StaticResource PrimaryBackgroundColor}" Background="#F5F5F5" FontSize="16" FontWeight="Normal" Foreground="{StaticResource PrimaryTextColor}" SelectionBrush="#FF6DBDD1"  SelectionTextBrush="White"  VerticalAlignment="Top" Width="223"></TextBox>
+                <Border Background="{StaticResource SecundaryBackgroundColor}" MouseLeftButtonDown="AddFriend_Click" CornerRadius="8" Style="{StaticResource BorderTriggerStyle}" BorderThickness="2" BorderBrush="CornflowerBlue" Margin="19,103,19,34">
+                    <Label FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource PrimaryTextColor}" Content="{DynamicResource m_add}" Margin="0,0,0,-2"/>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

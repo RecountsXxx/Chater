@@ -1,0 +1,78 @@
+﻿<Page x:Class="Messenger.Pages.ChatPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Messenger"
+      mc:Ignorable="d" 
+      d:DesignHeight="505" d:DesignWidth="620"
+      Title="ChatPage" Unloaded="Page_Unloaded" Loaded="Page_Loaded" ShowsNavigationUI="False" KeyDown="Page_KeyDown">
+    <Page.Resources>
+        <ContextMenu  Style="{StaticResource RoundedCornerContextMenu}" x:Key="myContextMenuChat">
+            <MenuItem Click="DeleteMesages_Click">
+                <MenuItem.Header>
+                    <StackPanel  Orientation="Horizontal">
+                        <Image Source="\Images\musorka.png" Width="16" Height="16" />
+                        <TextBlock Text="Delete message" Foreground="#DE3333" FontFamily="Cascadia code" FontSize="12" Margin="5,0,0,0" />
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Click="OpenFolderPath_Click">
+                <MenuItem.Header>
+                    <StackPanel  Orientation="Horizontal">
+                        <Image Source="\Images\Folder.png" Width="16" Height="16" />
+                        <TextBlock Text="Open folder path" Foreground="Black" FontFamily="Cascadia code" FontSize="12" Margin="5,0,0,0" />
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+        </ContextMenu>
+
+    </Page.Resources>
+    <Grid Background="{StaticResource ThirtyBackgroundColor}" x:Name="chatGrid" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Background="{StaticResource SecundaryBackgroundColor}" Grid.Row="0">
+            <Label Content="{DynamicResource m_saved}"  x:Name="chatReceiverNameLabel" Foreground="{StaticResource PrimaryTextColor}" FontFamily="cascadia code" HorizontalAlignment="Left" FontSize="16" VerticalAlignment="Top" Margin="65,0,0,0"></Label>
+            <Label Content="{DynamicResource m_yourSaved}" x:Name="lastReceivedLabel" Foreground="{StaticResource PrimaryTextColor}" FontFamily="cascadia code" HorizontalAlignment="Left" FontSize="11" VerticalAlignment="Bottom" Margin="65,0,0,0"></Label>
+            <Border x:Name="AvatarFriendBorder" Margin="3" HorizontalAlignment="Left" Width="45" CornerRadius="15">
+                <Border.Background>
+                    <ImageBrush ImageSource="\Images\saved.png"></ImageBrush>
+                </Border.Background>
+            </Border>
+            <Border MouseLeftButtonDown="AudioCall_Click" Style="{StaticResource BorderTriggerStyle}" Width="35" Height="35" Margin="556,5,29,5">
+                <Border.Background>
+                    <ImageBrush ImageSource="\Images\phone.png"></ImageBrush>
+                </Border.Background>
+            </Border>
+            <Border MouseLeftButtonDown="VideoCall_Click" Style="{StaticResource BorderTriggerStyle}" Width="35" Height="35" Margin="516,5,69,5">
+                <Border.Background>
+                    <ImageBrush ImageSource="\Images\video.png"></ImageBrush>
+                </Border.Background>
+            </Border>
+        </Grid>
+
+        <Grid Background="{StaticResource SecundaryBackgroundColor}" x:Name="ChatListBoxGrid"  Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+
+            <ListBox ScrollViewer.ScrollChanged="chatListBox_ScrollChanged" VirtualizingPanel.ScrollUnit="Pixel" Style="{StaticResource ChatListBoxStyle}" Loaded="chatListBox_Loaded"  ContextMenu="{StaticResource myContextMenuChat}" x:Name="chatListBox" FontSize="14" FontFamily="cascadia code" Background="{StaticResource ThirtyBackgroundColor}" Visibility="Visible">
+            </ListBox>
+
+            <Border  x:Name="BorderTextAndSendMessage"  Grid.Row="1" Background="{StaticResource SecundaryBackgroundColor}">
+                <WrapPanel Orientation="Horizontal">
+                    <TextBox x:Name="MessageTextBox" Foreground="{StaticResource PrimaryTextColor}" FontFamily="SEGOU UI EMOJI" FontSize="15" Tag="{DynamicResource m_sendMessage}" Width="388" Height="40"></TextBox>
+                    <Image Style="{StaticResource ImageTriggerStyle}" Width="35"  x:Name="buttonSendRarMessage" Margin="10,0,0,0" Source="\Images\rar.png" MouseLeftButtonDown="buttonSendRarMessage_MouseLeftButtonDown"></Image>
+                    <Image Style="{StaticResource ImageTriggerStyle}" Width="35" x:Name="buttonSendVideoMessage" Margin="10,0,0,0" Source="\Images\VideoMessage.png" MouseLeftButtonDown="buttonSendVideoMessage_MouseLeftButtonDown"></Image>
+                    <Image Style="{StaticResource ImageTriggerStyle}" Width="35" x:Name="buttonSendImageMessage" Margin="10,0,0,0" Source="\Images\ImageMessage.png" MouseLeftButtonDown="buttonSendImageMessage_MouseLeftButtonDown"></Image>
+                    <Image Style="{StaticResource ImageTriggerStyle}" Width="35" x:Name="buttonSendVoiceMessage" Margin="3,0,0,0" Source="\Images\VoiceMessage.png" MouseLeftButtonDown="buttonSendVoiceMessage_MouseLeftButtonDown"></Image>
+                    <Image Style="{StaticResource ImageTriggerStyle}" Width="35" x:Name="buttonSendMessage" Margin="0,0,0,0" Source="\Images\Send.png" MouseLeftButtonDown="buttonSendMessage_MouseLeftButtonDown"></Image>
+                </WrapPanel>
+
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

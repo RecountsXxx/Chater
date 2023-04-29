@@ -1,0 +1,50 @@
+create table UserTable(
+[Id] int not null primary key identity(1,1),
+[Name] nvarchar(100) null,
+[Password] nvarchar(50) null,
+[Avatar] nvarchar(100) null,
+[IsOnline] bit null,
+[LastReceived] datetime null,
+);
+
+create table MessageTable(
+[Id] int not null primary key identity(1,1),
+[Text] nvarchar(max) null,
+[TimeStamp] datetime not null,
+[SenderId] int not null foreign key references UserTable([Id]),
+[ReceivedId] int not null foreign key references UserTable([Id]),
+[VoiceMessage] nvarchar(100) null,
+[ImageMessage] nvarchar(100) null,
+[VideoMessage] nvarchar(100) null,
+[ZipMessage] nvarchar(100) null,
+);
+
+create table FriendTable(
+[Id] int not null,
+[UserId] int null,
+);
+
+create table BlockedUsersTable(
+[UserId] int not null,
+[BlockedId] int null,
+);
+
+create table RequestedUsersTable(
+[UserId] int not null,
+[ToRequestsId] int null,
+);
+
+create table NotificationQueue(
+[Id] int not null primary key identity(1,1),
+[MessageId] int foreign key references MessageTable([Id]),
+);
+
+CREATE TRIGGER trg_MessageTable_NotificationQueue
+ON MessageTable
+AFTER INSERT
+AS
+BEGIN
+    INSERT INTO NotificationQueue (MessageId)
+    SELECT id
+    FROM inserted;
+END;
