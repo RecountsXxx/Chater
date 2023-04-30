@@ -565,9 +565,16 @@ namespace Messenger.Pages
         #region Calls
         private void AudioCall_Click(object sender, MouseButtonEventArgs e)
         {
-            MainWindow.timerCheckOutCalls.Stop();
-            MainWindow.MessengerLiblaryCalls.AudioCall(receivedId,userId);
-            NavigationService.Navigate(new AudioCallPage(user, receiveUser, MessengerLiblary.GetFile(receiveUser.Avatar),true));
+            if (receiverOnline == true)
+            {
+                MainWindow.timerCheckOutCalls.Stop();
+                MainWindow.MessengerLiblaryCalls.AudioCall(receivedId, userId);
+                NavigationService.Navigate(new AudioCallPage(user, receiveUser, MessengerLiblary.GetFile(receiveUser.Avatar), true));
+            }
+            else
+            {
+                MessageBox.Show("User is not online");
+            }
         }
         private void VideoCall_Click(object sender, MouseButtonEventArgs e)
         {

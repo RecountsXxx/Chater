@@ -41,7 +41,7 @@ namespace Messenger
         private User user = null;
         private User receiveUser = null;
         private NotifyIcon notify = new NotifyIcon();
-
+        private int callFromId = 0;
         private Mutex mutex = new Mutex();
         private string times = string.Empty;
         private bool endWaitingChangedChats = true;
@@ -82,7 +82,7 @@ namespace Messenger
 
         private void TimerCheckOutCalls_Tick(object? sender, EventArgs e)
         {
-            int callFromId = MessengerLiblaryCalls.CheckOutCalls(user.Id);
+            callFromId = MessengerLiblaryCalls.CheckOutCalls(user.Id);
             if (callFromId > 0)
             {
                 User callerUser = MessengerLiblary.GetUserPerId(callFromId);
@@ -281,6 +281,10 @@ namespace Messenger
             user = MessengerLiblary.GetUserPerId(user.Id);
             SlowOpacity(new MainPage());
             GC.Collect();
+        }
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            MessengerLiblaryCalls.CloseAudioCall(user.Id, callFromId);
         }
         #endregion
 

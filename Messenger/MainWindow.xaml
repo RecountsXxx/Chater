@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Messenger"
         mc:Ignorable="d"
-    Title="MainWindow" WindowStartupLocation="CenterScreen"  AllowsTransparency="True" Background="{StaticResource SecundaryBackgroundColor}"  Height="505" MinHeight="500" MinWidth="700" ResizeMode="CanResize" Width="800" WindowStyle="None">
+    Title="MainWindow" WindowStartupLocation="CenterScreen" Closed="Window_Closed" AllowsTransparency="True" Background="{StaticResource SecundaryBackgroundColor}"  Height="505" MinHeight="500" MinWidth="700" ResizeMode="CanResize" Width="800" WindowStyle="None">
     <Window.Resources>
 
         <ContextMenu  Style="{StaticResource RoundedCornerContextMenu}" x:Key="myContextMenuFriend">
@@ -48,7 +48,7 @@
                 <ColumnDefinition Width="35"/>
             </Grid.ColumnDefinitions>
             <Label Margin="8,0,0,0" FontFamily="Cascadia code" Foreground="WhiteSmoke" Content="{DynamicResource m_Title}"></Label>
-            <Border HorizontalAlignment="Left" Style="{StaticResource BorderTriggerStyle}" MouseLeftButtonDown="MainPage_Click" CornerRadius="10" Background="{StaticResource PrimaryBackgroundColor}" BorderBrush="AliceBlue" BorderThickness="2" Width="130" Margin="352,-2,0,2">
+            <Border x:Name="mainPageBorder" HorizontalAlignment="Left" Style="{StaticResource BorderTriggerStyle}" MouseLeftButtonDown="MainPage_Click" CornerRadius="10" Background="{StaticResource PrimaryBackgroundColor}" BorderBrush="AliceBlue" BorderThickness="2" Width="130" Margin="352,-2,0,2">
                 <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Cascadia code" Foreground="{StaticResource PrimaryTextColor}" Content="{DynamicResource m_mainPage}"/>
             </Border>
             <Button Grid.Column="3" x:Name="btnClose" Style="{StaticResource IconButtonsStyle}" Content="{DynamicResource close}" Click="btnClose_Click">

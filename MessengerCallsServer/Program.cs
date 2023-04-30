@@ -70,7 +70,7 @@ namespace MessengerCallsServer
                     int len = stream.Read(buffer, 0, buffer.Length);
                     string response = Encoding.UTF8.GetString(buffer, 0, len);
 
-                    if (response.Contains("Check status audio call") /*|| responseTwo.Contains("Check status audio call")*/)
+                    if (response.Contains("Check status audio call"))
                     {
                         if (hungup == true)
                         {
@@ -78,27 +78,30 @@ namespace MessengerCallsServer
                             int friendId = Convert.ToInt32(response.Split(" ")[7]);
                             User userOne = allUsers.Where(x => x.id == userId).FirstOrDefault();
                             User userTwo = allUsers.Where(x => x.id == friendId).FirstOrDefault();
-                            NetworkStream streamOne = userOne.client.GetStream();
-                            NetworkStream streamTwo = userTwo.client.GetStream();
-                            if (realCallsDictionary.ContainsKey(userOne.id) && realCallsDictionary.ContainsKey(userTwo.id))
+                            if (userOne != null && userTwo != null)
                             {
-                                streamOne.Write(Encoding.UTF8.GetBytes("NICE"));
-                                streamTwo.Write(Encoding.UTF8.GetBytes("NICE"));
-                                Console.WriteLine(":ice");
-                            }
-                            if (!realCallsDictionary.ContainsKey(userOne.id))
-                            {
-                                User userTemp = allUsers.Where(x => x.id == userOne.id).FirstOrDefault();
-                                NetworkStream streamTemp = userTemp.client.GetStream();
-                                streamTemp.Write(Encoding.UTF8.GetBytes("User is cancelled call"));
-                                Console.WriteLine("userOne");
-                            }
-                            if (!realCallsDictionary.ContainsKey(userTwo.id))
-                            {
-                                User userTemp = allUsers.Where(x => x.id == userTwo.id).FirstOrDefault();
-                                NetworkStream streamTemp = userTemp.client.GetStream();
-                                streamTemp.Write(Encoding.UTF8.GetBytes("User is cancelled call"));
-                                Console.WriteLine("userTwo");
+                                NetworkStream streamOne = userOne.client.GetStream();
+                                NetworkStream streamTwo = userTwo.client.GetStream();
+                                if (realCallsDictionary.ContainsKey(userOne.id) && realCallsDictionary.ContainsKey(userTwo.id))
+                                {
+                                    streamOne.Write(Encoding.UTF8.GetBytes("NICE"));
+                                    streamTwo.Write(Encoding.UTF8.GetBytes("NICE"));
+                                    Console.WriteLine(":ice");
+                                }
+                                if (!realCallsDictionary.ContainsKey(userOne.id))
+                                {
+                                    User userTemp = allUsers.Where(x => x.id == userOne.id).FirstOrDefault();
+                                    NetworkStream streamTemp = userTemp.client.GetStream();
+                                    streamTemp.Write(Encoding.UTF8.GetBytes("User is cancelled call"));
+                                    Console.WriteLine("userOne");
+                                }
+                                if (!realCallsDictionary.ContainsKey(userTwo.id))
+                                {
+                                    User userTemp = allUsers.Where(x => x.id == userTwo.id).FirstOrDefault();
+                                    NetworkStream streamTemp = userTemp.client.GetStream();
+                                    streamTemp.Write(Encoding.UTF8.GetBytes("User is cancelled call"));
+                                    Console.WriteLine("userTwo");
+                                }
                             }
                         }
 
@@ -152,6 +155,8 @@ namespace MessengerCallsServer
                     }
                     if (response.Contains("Disconnect"))
                     {
+                        realCallsDictionary.Remove(user.id);
+                        allUsers.Remove(user);
                         Console.WriteLine("discoonectttt");
                         user.client.Close();
                         break;
