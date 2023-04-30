@@ -687,17 +687,16 @@ namespace MiniMessenger
                             string passwordTemp = reader.GetString(2);
                             bool isOnline = reader.GetBoolean(4);
                             string avatar = reader.GetString(3);
-                            user = new User(id, nameTemp, passwordTemp) { IsOnline = isOnline, Avatar = avatar };
+                            string ipAdress = reader.GetString(6);
+                            int port = reader.GetInt32(7);
+                            user = new User(id, nameTemp, passwordTemp) { IsOnline = isOnline, Avatar = avatar, IpAddress = ipAdress, Port = port };
                         }
                     }
                     sql.Close();
                     sql.Open();
-                    command = new SqlCommand($"update usertable set IsOnline = 1 where name = '{username}'", sql);
+                    command = new SqlCommand($"update usertable set IsOnline = 1 ,LastReceived = null where name = '{username}'", sql);
                     command.ExecuteNonQuery();
                     sql.Close();
-                    sql.Open();
-                    command = new SqlCommand($"update usertable set LastReceived = null where name = '{username}'", sql);
-                    command.ExecuteNonQuery();
                 }
             });
             return user;
@@ -718,6 +717,21 @@ namespace MiniMessenger
                         result = "Registration succesfull!";
                         Directory.CreateDirectory(ServerDiskPath + username);
                         SetAvatar(username, avatarBytes);
+
+                        while (command.ExecuteNonQuery() < 0)
+                        {
+                            Random rd = new Random();
+                            int generatedPort = rd.Next(81, 10000);
+                            string ip = "127.0.0." + rd.Next(1, 255);
+                            command = new SqlCommand($"IF NOT EXISTS (SELECT * FROM BusyIpAndPorts WHERE Port = {generatedPort} or IpAdress = '{ip}') insert into BusyIpAndPorts values ('{ip}',{generatedPort})", sql);
+                            if (command.ExecuteNonQuery() > 0)
+                            {
+                                command = new SqlCommand($"update usertable set IpAddress = '{ip}', Port = {generatedPort} where name = '{username}'", sql);
+                                command.ExecuteNonQuery();
+                                break;
+                            }
+                        }
+
                     }
                     else
                         result = "User is Contains!";
@@ -763,9 +777,10 @@ namespace MiniMessenger
                             bool isOnline = reader.GetBoolean(4);
                             DateTime lastReceived = DateTime.MinValue;
                             if (!reader.IsDBNull(5))
-                                lastReceived = reader.GetDateTime(5);
-
-                            user = new User(id, nameTemp) { Avatar = avatar, IsOnline = isOnline, LastReceived = lastReceived };
+                                lastReceived = reader.GetDateTime(5); 
+                            string ipAdress = reader.GetString(6);
+                            int port = reader.GetInt32(7);
+                            user = new User(id, nameTemp) { Avatar = avatar, IsOnline = isOnline, LastReceived = lastReceived, IpAddress = ipAdress, Port = port };
                         }
                     }
 
@@ -795,7 +810,9 @@ namespace MiniMessenger
                             if (!reader.IsDBNull(5))
                                 lastReceived = reader.GetDateTime(5);
 
-                            user = new User(id, nameTemp) { Avatar = avatar, IsOnline = isOnline, LastReceived = lastReceived };
+                            string ipAdress = reader.GetString(6);
+                            int port = reader.GetInt32(7);
+                            user = new User(id, nameTemp) { Avatar = avatar, IsOnline = isOnline, LastReceived = lastReceived, IpAddress = ipAdress, Port = port };
                         }
                     }
                 }

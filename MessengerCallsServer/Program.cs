@@ -106,6 +106,7 @@ namespace MessengerCallsServer
                         }
 
                     }
+
                     if (response.Contains("Check calls"))
                     {
                         if (callsDictionary.ContainsKey(user.id))
@@ -119,24 +120,26 @@ namespace MessengerCallsServer
                     if (response.Contains("Audio call"))
                     {
                         int userId = Convert.ToInt32(response.Split(" ")[3]);
-                         int friendId = Convert.ToInt32(response.Split(" ")[5]);
+                        int friendId = Convert.ToInt32(response.Split(" ")[5]);
                         if (!realCallsDictionary.ContainsKey(userId))
                         {
                             realCallsDictionary.Add(userId, friendId);
                         }
+ 
                         if (!callsDictionary.ContainsKey(userId))
                             callsDictionary.Add(userId, friendId);
 
                         Console.WriteLine("audio call");
-                    }                   
+                    }
                     if (response.Contains("Up audio call"))
                     {
                         int userId = Convert.ToInt32(response.Split(" ")[6]);
                         int friendId = Convert.ToInt32(response.Split(" ")[4]);
                         realCallsDictionary.Add(userId, friendId);
                         hungup = true;
-                       
+
                     }
+
                     if (response.Contains("Close audio call"))
                     {
                         int userId = Convert.ToInt32(response.Split(" ")[6]);
@@ -152,9 +155,9 @@ namespace MessengerCallsServer
                             NetworkStream streamTempTwo = userTempTwo.client.GetStream();
                             streamTempTwo.Write(Encoding.UTF8.GetBytes("User is cancelled call"));
                         }
-                        
+
                         realCallsDictionary.Remove(userId);
-                        Console.WriteLine(userId+ " " + friendId + " disconnect");
+                        Console.WriteLine(userId + " " + friendId + " disconnect");
                     }
                     if (response.Contains("Disconnect"))
                     {
@@ -164,10 +167,13 @@ namespace MessengerCallsServer
                         user.client.Close();
                         break;
                     }
+
                 }
-                catch(Exception ex) {
+                catch (Exception ex)
+                {
 
                     Console.WriteLine(ex.Message);
+                    break;
                 }
             }
         }

@@ -51,13 +51,15 @@ namespace Messenger.Pages
             this.user = user;
             this.callerUser = callerUser;
             InitializeComponent();
-            if(sender == true)
+
+            remotePort = user.Port;
+            localPort = callerUser.Port;
+            ip = user.IpAddress;
+
+            if (sender == true)
             {
                 closeCallBorder.Margin = new Thickness(0, 150, 0, 0);
                 upCallBorder.Visibility = Visibility.Collapsed;
-                    remotePort = 54321;
-                    localPort = 12345;
-                    ip = "127.0.0.255";
                 closeCallBorder.IsEnabled = false;
                 statusLabel.Content = "Звоним";
             }
@@ -104,15 +106,21 @@ namespace Messenger.Pages
             timerCloseCalling.Stop();
             timerCloseAudioPage.Start();
         }
-
         private void TimerEnableButton_Tick(object? sender, EventArgs e)
         {
             closeCallBorder.IsEnabled = true;
         }
-
         private void TimerCloseAudioPage_Tick(object? sender, EventArgs e)
         {
-            this.NavigationService.Navigate(new MainPage(user.Id));
+            //когда ещё трубку не взята и выключаеться компьютер, исправить  object not reference проблема когда выключаеться звонящий
+            try
+            {
+                this.NavigationService.Navigate(new MainPage(user.Id));
+            }
+            catch
+            {
+                this.NavigationService.Navigate(new MainPage(callerUser.Id));
+            }
             timerCloseAudioPage.Stop();
         }
 
@@ -157,11 +165,8 @@ namespace Messenger.Pages
                             {
                                 try
                                 {
-
-
                                     if (!isCanceled)
                                     {
-
                                         byte[] bytes = client.Receive(ref remoteEP);
                                         var audioStream = new MemoryStream(bytes);
 
@@ -186,11 +191,8 @@ namespace Messenger.Pages
                         receiveThread.Start();
                         senderThread = new System.Threading.Thread(() =>
                         {
-
                             string message;
-
                             waveIn.WaveFormat = new WaveFormat(48000, 24, 2);
-
                             var writer = new MemoryStream();
                             var writerStream = new WaveFileWriter(writer, waveIn.WaveFormat);
 
@@ -200,7 +202,6 @@ namespace Messenger.Pages
                                 client.Send(bytes, bytes.Length, remoteEP);
                             };
                             waveIn.StartRecording();
-
                         });
                         senderThread.Start();
                         firstRun = false;
@@ -214,16 +215,13 @@ namespace Messenger.Pages
             MainWindow.MessengerLiblaryCalls.CloseAudioCall(user.Id,callerUser.Id);
             waveOutSound.Stop();
             waveOutSound.Dispose();
-            //NavigationService.Navigate(new MainPage());
         }
         private void upCall_Click(object sender, MouseButtonEventArgs e)
         {
             MainWindow.MessengerLiblaryCalls.UpAudioCall(user.Id, callerUser.Id);
             closeCallBorder.Margin = new Thickness(0, 150, 0, 0);
-            upCallBorder.Visibility = Visibility.Collapsed;
-         
+            upCallBorder.Visibility = Visibility.Collapsed;      
         }
-
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             client.Close();

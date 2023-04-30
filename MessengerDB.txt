@@ -34,6 +34,12 @@ create table RequestedUsersTable(
 [ToRequestsId] int null,
 );
 
+create table BusyIpAndPorts(
+[Id] int not null identity(1,1) primary key,
+[IpAdress] nvarchar(20) null,
+[Port] int null,
+);
+
 create table NotificationQueue(
 [Id] int not null primary key identity(1,1),
 [MessageId] int foreign key references MessageTable([Id]),
