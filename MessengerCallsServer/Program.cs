@@ -141,14 +141,17 @@ namespace MessengerCallsServer
                     {
                         int userId = Convert.ToInt32(response.Split(" ")[6]);
                         int friendId = Convert.ToInt32(response.Split(" ")[4]);
-                     
-                            User userTemp = allUsers.Where(x => x.id == friendId).FirstOrDefault();
-                            NetworkStream streamTemp = user.client.GetStream();
-                            streamTemp.Write(Encoding.UTF8.GetBytes("User is cancelled call"));
-                
-                            User userTempTwo = allUsers.Where(x => x.id == userId).FirstOrDefault();
+
+                        User userTemp = allUsers.Where(x => x.id == friendId).FirstOrDefault();
+                        NetworkStream streamTemp = user.client.GetStream();
+                        streamTemp.Write(Encoding.UTF8.GetBytes("User is cancelled call"));
+
+                        User userTempTwo = allUsers.Where(x => x.id == userId).FirstOrDefault();
+                        if (userTempTwo != null)
+                        {
                             NetworkStream streamTempTwo = userTempTwo.client.GetStream();
                             streamTempTwo.Write(Encoding.UTF8.GetBytes("User is cancelled call"));
+                        }
                         
                         realCallsDictionary.Remove(userId);
                         Console.WriteLine(userId+ " " + friendId + " disconnect");

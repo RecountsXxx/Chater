@@ -101,6 +101,7 @@ namespace Messenger.Pages
         private void TimerCloseCalling_Tick(object? sender, EventArgs e)
         {
             MainWindow.MessengerLiblaryCalls.CloseAudioCall(user.Id, callerUser.Id);
+            timerCloseCalling.Stop();
             timerCloseAudioPage.Start();
         }
 
@@ -141,6 +142,7 @@ namespace Messenger.Pages
                 }
                 if(response == "NICE")
                 {
+                    timerCloseCalling.Stop();
                     if (firstRun)
                     {
                         waveOutSound.Stop();

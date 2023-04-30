@@ -202,46 +202,6 @@ namespace MessengerLiblary
         {
             stream.Write(Encoding.UTF8.GetBytes($"Delete message - {userId} - {friendId} - {id} - {format}"));
         }
-
-
-        public async Task<bool> StartAudioCall()
-        {
-            bool result = false;
-            await Task.Run(() =>
-            {
-                while (true)
-                {
-                    byte[] buffer = new byte[1024];
-                    stream.Write(Encoding.UTF8.GetBytes($"Audio call"));
-                    int len = stream.Read(buffer, 0, buffer.Length);
-                    string response = Encoding.UTF8.GetString(buffer, 0, len);
-                    if (response.Contains("Accepts!"))
-                    {
-                        result = true;
-                        break;
-                    }
-                    else
-                    {
-                        result = false;
-                    }
-                }
-            });
-            return result;
-        }
-        public void StopAudioCall()
-        {
-            stream.Write(Encoding.UTF8.GetBytes($"Goodbye audio call"));
-        }
-
-        //public void StartVideoCall()
-        //{
-        //    stream.Write(Encoding.UTF8.GetBytes($"Video call"));
-        //}
-        //public void StopVideoCall()
-        //{
-        //    stream.Write(Encoding.UTF8.GetBytes($"Goodbye video call"));
-        //}
-
         #endregion
 
         #region User funcs

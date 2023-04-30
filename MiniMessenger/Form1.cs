@@ -70,20 +70,6 @@ namespace MiniMessenger
             consoleListBox.Items.Add("Server is stopped!");
             listener.Stop();
         }
-
-        //private void AudioCallServer(TcpClient oneClient,TcpClient twoClient)
-        //{
-        //    NetworkStream streamOne = oneClient.GetStream();
-        //    NetworkStream streamTwo = twoClient.GetStream();
-
-        //    streamOne.Write(Encoding.UTF8.GetBytes("Accepts!"));
-        //    streamTwo.Write(Encoding.UTF8.GetBytes("Accepts!"));
-        //    MessageBox.Show("two cleint connecteds audio");
-        //}
-        //private void VideoCallServer(TcpClient oneClient, TcpClient twoClient)
-        //{
-        //    MessageBox.Show("two cleint connecteds video");
-        //}
         private void HandleClient(TcpClient client)
         {
             timerOnline.Start();

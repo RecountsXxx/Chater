@@ -284,7 +284,14 @@ namespace Messenger
         }
         private void Window_Closed(object sender, EventArgs e)
         {
-            MessengerLiblaryCalls.CloseAudioCall(user.Id, callFromId);
+            if (callFromId > 0)
+            {
+                MessengerLiblaryCalls.CloseAudioCall(user.Id, callFromId);
+            }
+            else
+            {
+                MainWindow.MessengerLiblaryCalls.DisconnectCallsServer();
+            }
         }
         #endregion
 
