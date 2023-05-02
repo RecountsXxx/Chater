@@ -21,6 +21,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Windows.Media.Animation;
+using Application = System.Windows.Application;
 
 namespace Messenger.Pages
 {
@@ -29,6 +30,13 @@ namespace Messenger.Pages
     /// </summary>
     public partial class AudioCallPage : Page
     {
+        //когда ещё трубку не взята и выключаеться компьютер, исправить  object not reference проблема когда выключаеться звонящий
+        //и когда уже взята трубка ошибка когда отключаеться звонящий
+        //исправить онлайн
+        //заблокировать все остальные елементы управления
+        //сделать язык
+        //чистить память
+
         User user = null;
         User callerUser = null;
         bool firstRun = true;
@@ -39,29 +47,49 @@ namespace Messenger.Pages
         IPEndPoint remoteEP = null;
         Thread receiveThread;
         Thread senderThread;
-        WaveInEvent waveIn = new WaveInEvent();
-        WaveOutEvent waveOutSound = new WaveOutEvent();
+        WaveInEvent waveIn;
+        WaveOutEvent waveOutSound;
         DispatcherTimer timerCloseAudioPage = new DispatcherTimer();
         DispatcherTimer timerEnableButton = new DispatcherTimer();
         DispatcherTimer timerCloseCalling = new DispatcherTimer();
+        MainWindow window;
         bool isCanceled = false;
-        public AudioCallPage(User user,User callerUser, byte[] callerAvatar,bool sender)
+
+        public AudioCallPage(User user,User callerUser, byte[] callerAvatar,bool sender,MainWindow window)
         {
-            
+            InitializeComponent();
+            this.window = window;
             this.user = user;
             this.callerUser = callerUser;
-            InitializeComponent();
-
+            waveIn = new WaveInEvent();
+            waveOutSound = new WaveOutEvent();
+            MainWindow.CallerInId = callerUser.Id;
             remotePort = user.Port;
             localPort = callerUser.Port;
             ip = user.IpAddress;
+
+            window.mainPageBorder.Visibility = Visibility.Collapsed;
+            window.FriendGrid.Visibility = Visibility.Collapsed;
+            window.MainGrid.ColumnDefinitions[1].Width = new GridLength(800.0);
+            window.MainGrid.ColumnDefinitions[0].Width = new GridLength(0);
+
+            try
+            {
+                client = new UdpClient(localPort);
+                remoteEP = new IPEndPoint(IPAddress.Parse(ip), remotePort);
+            }
+            catch
+            {
+                statusLabel.Content = Application.Current.FindResource("m_youAlreadyCalled")?.ToString();
+                timerCloseAudioPage.Start();
+            }
 
             if (sender == true)
             {
                 closeCallBorder.Margin = new Thickness(0, 150, 0, 0);
                 upCallBorder.Visibility = Visibility.Collapsed;
                 closeCallBorder.IsEnabled = false;
-                statusLabel.Content = "Звоним";
+                statusLabel.Content = Application.Current.FindResource("m_phoning")?.ToString();
             }
             else
             {
@@ -69,11 +97,8 @@ namespace Messenger.Pages
                 var waveStream = new RawSourceWaveStream(ms, new WaveFormat(44100, 16, 2));
                 waveOutSound.Init(waveStream);
                 waveOutSound.Play();
-                statusLabel.Content = "Вам звонят";
+                statusLabel.Content = Application.Current.FindResource("m_youCalled")?.ToString();
             }
-
-            client = new UdpClient(localPort);
-            remoteEP = new IPEndPoint(IPAddress.Parse(ip), remotePort);
 
             ImageBrush imageBrush = new ImageBrush();
             BitmapImage bitmapImage = new BitmapImage();
@@ -102,6 +127,7 @@ namespace Messenger.Pages
 
         private void TimerCloseCalling_Tick(object? sender, EventArgs e)
         {
+
             MainWindow.MessengerLiblaryCalls.CloseAudioCall(user.Id, callerUser.Id);
             timerCloseCalling.Stop();
             timerCloseAudioPage.Start();
@@ -112,7 +138,6 @@ namespace Messenger.Pages
         }
         private void TimerCloseAudioPage_Tick(object? sender, EventArgs e)
         {
-            //когда ещё трубку не взята и выключаеться компьютер, исправить  object not reference проблема когда выключаеться звонящий
             try
             {
                 this.NavigationService.Navigate(new MainPage(user.Id));
@@ -128,85 +153,93 @@ namespace Messenger.Pages
         {
             while (true)
             {
-                Thread.Sleep(500);
-                string response =MainWindow.MessengerLiblaryCalls.CheckStatusAudioCall(user.Id,callerUser.Id);
-                //Dispatcher.BeginInvoke(() => statusLabel.Content = response);
-                if (response.Contains("User is cancelled call"))
+                try
                 {
+                    Thread.Sleep(500);
+                    string response = MainWindow.MessengerLiblaryCalls.CheckStatusAudioCall(user.Id, callerUser.Id);
+                    if (response.Contains("User is cancelled call"))
+                    {
 
-                    isCanceled = true;
-                    if (senderThread != null && receiveThread != null)
-                    {
-                        waveIn.Dispose();
-                        senderThread.Interrupt();
-                        receiveThread.Interrupt();
-                    }
-                    timerCloseAudioPage.Start();
-                    waveOutSound.Stop();
-                    waveOutSound.Dispose();
-                    MainWindow.MessengerLiblaryCalls.DisconnectCallsServer();
-                    Dispatcher.BeginInvoke(() => statusLabel.Content = "Вызов завершён");
-                    break;
-                }
-                if(response == "NICE")
-                {
-                    timerCloseCalling.Stop();
-                    if (firstRun)
-                    {
+                        isCanceled = true;
+                        if (senderThread != null && receiveThread != null)
+                        {
+                            waveIn.Dispose();
+                            senderThread.Interrupt();
+                            receiveThread.Interrupt();
+                        }
+                        timerCloseAudioPage.Start();
                         waveOutSound.Stop();
                         waveOutSound.Dispose();
-                        Dispatcher.BeginInvoke(() => statusLabel.Content = "Вызов идёт");
-
-
-                        receiveThread = new System.Threading.Thread(() =>
+                        MainWindow.MessengerLiblaryCalls.DisconnectCallsServer();
+                        Dispatcher.BeginInvoke(() => statusLabel.Content = Application.Current.FindResource("m_callIsCanceled")?.ToString());
+                        Thread.CurrentThread.Interrupt();
+                        break;
+                    }
+                    if (response == "NICE")
+                    {
+                        timerCloseCalling.Stop();
+                        if (firstRun)
                         {
+                            waveOutSound.Stop();
+                            waveOutSound.Dispose();
+                            Dispatcher.BeginInvoke(() => statusLabel.Content = Application.Current.FindResource("m_callIsRun")?.ToString());
 
-                            while (true)
+
+                            receiveThread = new System.Threading.Thread(() =>
                             {
-                                try
-                                {
-                                    if (!isCanceled)
-                                    {
-                                        byte[] bytes = client.Receive(ref remoteEP);
-                                        var audioStream = new MemoryStream(bytes);
 
-                                        var waveOut = new WaveOutEvent();
-                                        var waveStream = new RawSourceWaveStream(audioStream, new WaveFormat(48000, 24, 2));
-                                        waveOut.Init(waveStream);
-                                        waveOut.Play();
-                                    }
-                                    else
+                                while (true)
+                                {
+                                    try
                                     {
-                                        client.Close();
+                                        if (!isCanceled)
+                                        {
+                                            byte[] bytes = client.Receive(ref remoteEP);
+                                            var audioStream = new MemoryStream(bytes);
+
+                                            var waveOut = new WaveOutEvent();
+                                            var waveStream = new RawSourceWaveStream(audioStream, new WaveFormat(48000, 24, 2));
+                                            waveOut.Init(waveStream);
+                                            waveOut.Play();
+                                        }
+                                        else
+                                        {
+                                            client.Close();
+                                            break;
+                                        }
+                                    }
+                                    catch
+                                    {
                                         break;
                                     }
                                 }
-                                catch
-                                {
-                                    break;
-                                }
-                            }
 
-                        });
-                        receiveThread.Start();
-                        senderThread = new System.Threading.Thread(() =>
-                        {
-                            string message;
-                            waveIn.WaveFormat = new WaveFormat(48000, 24, 2);
-                            var writer = new MemoryStream();
-                            var writerStream = new WaveFileWriter(writer, waveIn.WaveFormat);
-
-                            waveIn.DataAvailable += (sender, e) =>
+                            });
+                            receiveThread.Start();
+                            senderThread = new System.Threading.Thread(() =>
                             {
-                                byte[] bytes = e.Buffer;
-                                client.Send(bytes, bytes.Length, remoteEP);
-                            };
-                            waveIn.StartRecording();
-                        });
-                        senderThread.Start();
-                        firstRun = false;
+                                string message;
+                                waveIn.WaveFormat = new WaveFormat(48000, 24, 2);
+                                var writer = new MemoryStream();
+                                var writerStream = new WaveFileWriter(writer, waveIn.WaveFormat);
 
-                    }   
+                                waveIn.DataAvailable += (sender, e) =>
+                                {
+                                    byte[] bytes = e.Buffer;
+                                    client.Send(bytes, bytes.Length, remoteEP);
+                                };
+                                waveIn.StartRecording();
+                            });
+                            senderThread.Start();
+                            firstRun = false;
+
+                        }
+                    }
+
+                }
+                catch
+                {
+
                 }
             }
         }
@@ -224,6 +257,11 @@ namespace Messenger.Pages
         }
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
+            window.mainPageBorder.Visibility = Visibility.Visible;
+            window.FriendGrid.Visibility = Visibility.Visible;
+            window.MainGrid.ColumnDefinitions[1].Width = new GridLength(600.0);
+            window.MainGrid.ColumnDefinitions[0].Width = new GridLength(200);
+
             client.Close();
             client.Dispose();
             if (senderThread != null && receiveThread != null)
@@ -231,6 +269,7 @@ namespace Messenger.Pages
                 senderThread.Interrupt();
                 receiveThread.Interrupt();
             }
+            timerCloseAudioPage.Stop();
         }
     }
 }

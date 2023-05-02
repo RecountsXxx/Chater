@@ -46,7 +46,7 @@ namespace Messenger
         private string times = string.Empty;
         private bool endWaitingChangedChats = true;
         private bool firstStartupToReceiveMessage = true;
-
+        public static int CallerInId = 0;
         public MessengerLiblary.MessengerLiblary MessengerLiblary = new MessengerLiblary.MessengerLiblary();
         public static MessengerCallsLiblary MessengerLiblaryCalls = new MessengerCallsLiblary();
 
@@ -79,14 +79,13 @@ namespace Messenger
         }
 
         #region Timer
-
         private void TimerCheckOutCalls_Tick(object? sender, EventArgs e)
         {
             callFromId = MessengerLiblaryCalls.CheckOutCalls(user.Id);
             if (callFromId > 0)
             {
                 User callerUser = MessengerLiblary.GetUserPerId(callFromId);
-                SlowOpacity(new AudioCallPage(user,callerUser, MessengerLiblary.GetFile(callerUser.Avatar),false));
+                SlowOpacity(new AudioCallPage(user,callerUser, MessengerLiblary.GetFile(callerUser.Avatar),false,this));
                 timerCheckOutCalls.Stop();
             }
             
@@ -150,7 +149,7 @@ namespace Messenger
                 {
                     string receiveName = friends[FriendListBox.SelectedIndex].Name;
                     receiveUser = MessengerLiblary.GetUserPerName(receiveName);
-                    SlowOpacity(new ChatPage(user, receiveUser, MessengerLiblaryCalls));
+                    SlowOpacity(new ChatPage(user, receiveUser, MessengerLiblaryCalls,this));
                     endWaitingChangedChats = false;
                     timerWaitChangedChats.Start();
                 }
@@ -198,7 +197,7 @@ namespace Messenger
             {
                 MessengerLiblary.DeleteAllMessages(user.Id, receiveUser.Id);
                 System.Windows.MessageBox.Show(Application.Current.FindResource("m_chatCleaned")?.ToString(), "Message", MessageBoxButton.OK, MessageBoxImage.Question);
-                FramePage.Content = new ChatPage(user, receiveUser,MessengerLiblaryCalls);
+                FramePage.Content = new ChatPage(user, receiveUser,MessengerLiblaryCalls,this);
             }
         }
         private void BlockUser_Click(object sender, RoutedEventArgs e)
@@ -284,13 +283,20 @@ namespace Messenger
         }
         private void Window_Closed(object sender, EventArgs e)
         {
-            if (callFromId > 0)
+            timerCheckOutCalls.Stop();
+            timerUpdateFriends.Stop();
+            timerUpdateMessages.Stop();
+            timerWaitChangedChats.Stop();
+            if (!SettingsPage.onExitedAccount)
             {
-                MessengerLiblaryCalls.CloseAudioCall(user.Id, callFromId);
-            }
-            else
-            {
-                MainWindow.MessengerLiblaryCalls.DisconnectCallsServer();
+                if (callFromId > 0)
+                {
+                    MessengerLiblaryCalls.CloseAudioCall(user.Id, callFromId);
+                }
+                else
+                {
+                    MessengerLiblaryCalls.CloseAudioCall(user.Id, CallerInId);
+                }
             }
         }
         #endregion

@@ -28,7 +28,7 @@ namespace MiniMessenger
             InitializeComponent();
             startBtn_Click(null, null);
 
-            timerOnline.Interval = 30000;
+            timerOnline.Interval = 1000;
             timerOnline.Tick += TimerOnline_Tick;
             timerOnline.Start();
         }
@@ -107,9 +107,17 @@ namespace MiniMessenger
                     }
                     if (response.Contains("GetFriends"))
                     {
-                        int id = Convert.ToInt32(response.Split(" ")[2]);  
-                        if(!lastMessagesClient.ContainsKey(id))
-                        lastMessagesClient.Add(id, DateTime.Now);
+                        int id = Convert.ToInt32(response.Split(" ")[2]);
+                        if (lastMessagesClient.ContainsKey(id))
+                        {
+                            lastMessagesClient.Remove(id);
+                            lastMessagesClient.Add(id, DateTime.Now);
+                        }
+                        else
+                        {
+                            lastMessagesClient.Add(id, DateTime.Now);
+                        }
+                        
                         SetActive(id);
                         List<Friend> friends = GetFriends(id).Result;
                         stream.Write(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(friends)));

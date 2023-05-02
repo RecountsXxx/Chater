@@ -42,7 +42,7 @@ namespace MessengerLiblary
             if (stream.DataAvailable)
             {
                 int len = stream.Read(buffer, 0, buffer.Length);
-                if (Encoding.UTF8.GetString(buffer, 0, len) != "The input string 'User is cancelled call")
+                if (!Encoding.UTF8.GetString(buffer, 0, len).Contains("The input string"))
                 {
                     result = Convert.ToInt32(Encoding.UTF8.GetString(buffer, 0, len));
                 }
@@ -68,6 +68,12 @@ namespace MessengerLiblary
             stream.Write(Encoding.UTF8.GetBytes($"Up audio call - {userId} - {friendId}"));
             mutex.ReleaseMutex();
         }
+        public void CloseOnlyOneUserAudioCall(int userId)
+        {
+            mutex.WaitOne();
+            stream.Write(Encoding.UTF8.GetBytes($"Close only user - {userId}"));
+            mutex.ReleaseMutex();
+        }
         public string CheckStatusAudioCall(int userId,int friendId)
         {
             mutex.WaitOne();
@@ -82,7 +88,6 @@ namespace MessengerLiblary
             mutex.ReleaseMutex();
             return result;
         }
-
         public async Task<byte[]> GetVoice(int userId,int friendId) {
             byte[] buffer= new byte[10240000];
             MemoryStream ms = new MemoryStream();

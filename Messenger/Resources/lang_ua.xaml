@@ -58,4 +58,10 @@
     <v:String x:Key="m_zip">Zip файл</v:String>
 
     <v:String x:Key="m_youAlreadySended">Ви вже відравили запит на додовання</v:String>
+
+    <v:String x:Key="m_youAlreadyCalled">Цей абонент зайнятий</v:String>
+    <v:String x:Key="m_callIsCanceled">Звінок завершився</v:String>
+    <v:String x:Key="m_callIsRun">Звінок йде</v:String>
+    <v:String x:Key="m_phoning">Телефонуєм</v:String>
+    <v:String x:Key="m_youCalled">Вам телефонують</v:String>
 </ResourceDictionary>

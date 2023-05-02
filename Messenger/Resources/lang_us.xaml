@@ -59,4 +59,11 @@
     <v:String x:Key="m_zip">Zip file</v:String>
 
     <v:String x:Key="m_youAlreadySended">You already sended request this user</v:String>
+
+
+    <v:String x:Key="m_youAlreadyCalled">This abonent is busy</v:String>
+    <v:String x:Key="m_callIsCanceled">Call is drop</v:String>
+    <v:String x:Key="m_callIsRun">Call is run</v:String>
+    <v:String x:Key="m_phoning">Calling</v:String>
+    <v:String x:Key="m_youCalled">Incomming call</v:String>
 </ResourceDictionary>

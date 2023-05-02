@@ -30,7 +30,7 @@ namespace Messenger.Pages
         private bool IsCheckedPassword = true;
         private bool IsCheckedUsername = true;
         public MessengerLiblary.MessengerLiblary MessengerLiblary = new MessengerLiblary.MessengerLiblary();
-
+        public static bool onExitedAccount = false;
         public SettingsPage(User user, MessengerLiblary.MessengerLiblary messenger)
         {
             this.MessengerLiblary = messenger;
@@ -221,7 +221,7 @@ namespace Messenger.Pages
         }
         private void ExitInAccount_Click(object sender, MouseButtonEventArgs e)
         {
-
+            onExitedAccount = true;
             WriteRememerMe("False");
             MessengerLiblary.client.Close();
             AuthWindow window = new AuthWindow();

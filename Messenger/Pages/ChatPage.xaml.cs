@@ -57,10 +57,12 @@ namespace Messenger.Pages
 
         public MessengerLiblary.MessengerLiblary MessengerLiblary = new MessengerLiblary.MessengerLiblary();
         public MessengerLiblary.MessengerLiblary MessengerLiblaryTimer = new MessengerLiblary.MessengerLiblary();
-        public ChatPage(User user, User receiveUser, MessengerCallsLiblary messengerLiblaryCalls)
+        public MainWindow window;
+        public ChatPage(User user, User receiveUser, MessengerCallsLiblary messengerLiblaryCalls,MainWindow window)
         {
             MessengerLiblary.Connect("127.0.0.1", 8000);
             MessengerLiblaryTimer.Connect("127.0.0.1", 8000);
+            this.window = window;
             this.user = user;
             this.receiveUser = receiveUser;
             userId = user.Id;
@@ -569,7 +571,7 @@ namespace Messenger.Pages
             {
                 MainWindow.timerCheckOutCalls.Stop();
                 MainWindow.MessengerLiblaryCalls.AudioCall(receivedId, userId);
-                NavigationService.Navigate(new AudioCallPage(user, receiveUser, MessengerLiblary.GetFile(receiveUser.Avatar), true));
+                NavigationService.Navigate(new AudioCallPage(user, receiveUser, MessengerLiblary.GetFile(receiveUser.Avatar), true,window));
             }
             else
             {
