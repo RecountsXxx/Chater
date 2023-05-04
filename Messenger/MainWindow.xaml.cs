@@ -73,8 +73,7 @@ namespace Messenger
             timerUpdateMessages.Interval = TimeSpan.FromSeconds(1);
             timerUpdateMessages.Tick += TimerUpdateChat_Tick;
             timerUpdateMessages.Start();
-            
-            //MessengerLiblaryCalls.ConnectCallsServer("127.0.0.1", 8001,user.Id);
+           
 
         }
 

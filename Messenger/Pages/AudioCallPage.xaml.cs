@@ -30,13 +30,6 @@ namespace Messenger.Pages
     /// </summary>
     public partial class AudioCallPage : Page
     {
-        //когда ещё трубку не взята и выключаеться компьютер, исправить  object not reference проблема когда выключаеться звонящий
-        //и когда уже взята трубка ошибка когда отключаеться звонящий
-        //исправить онлайн
-        //заблокировать все остальные елементы управления
-        //сделать язык
-        //чистить память
-
         User user = null;
         User callerUser = null;
         bool firstRun = true;

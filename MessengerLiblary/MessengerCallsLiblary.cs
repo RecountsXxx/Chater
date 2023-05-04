@@ -42,7 +42,7 @@ namespace MessengerLiblary
             if (stream.DataAvailable)
             {
                 int len = stream.Read(buffer, 0, buffer.Length);
-                if (!Encoding.UTF8.GetString(buffer, 0, len).Contains("The input string"))
+                if (!Encoding.UTF8.GetString(buffer, 0, len).Contains("User is cancelled call"))
                 {
                     result = Convert.ToInt32(Encoding.UTF8.GetString(buffer, 0, len));
                 }

@@ -13,6 +13,7 @@ namespace MessengerCallsServer
         public int id;
         public string typeCall;
         public TcpClient client;
+
         public User(int id, string typeCall,TcpClient client)
         {
             this.id = id;
