@@ -27,9 +27,9 @@ namespace Messenger.Pages
     public partial class SettingsPage : Page
     {
         private User user = null;
+        public MessengerLiblary.MessengerLiblary MessengerLiblary = new MessengerLiblary.MessengerLiblary();
         private bool IsCheckedPassword = true;
         private bool IsCheckedUsername = true;
-        public MessengerLiblary.MessengerLiblary MessengerLiblary = new MessengerLiblary.MessengerLiblary();
         public static bool onExitedAccount = false;
         public SettingsPage(User user, MessengerLiblary.MessengerLiblary messenger)
         {

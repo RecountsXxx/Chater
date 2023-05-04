@@ -32,10 +32,6 @@ namespace Messenger.Pages
     {
         User user = null;
         User callerUser = null;
-        bool firstRun = true;
-        int remotePort = 12345;
-        int localPort = 54321;
-        string ip = "127.0.0.1";
         UdpClient client = null;
         IPEndPoint remoteEP = null;
         Thread receiveThread;
@@ -47,6 +43,10 @@ namespace Messenger.Pages
         DispatcherTimer timerCloseCalling = new DispatcherTimer();
         MainWindow window;
         bool isCanceled = false;
+        bool firstRun = true;
+        int remotePort = 12345;
+        int localPort = 54321;
+        string ip = "127.0.0.1";
 
         public AudioCallPage(User user,User callerUser, byte[] callerAvatar,bool sender,MainWindow window)
         {
@@ -120,7 +120,6 @@ namespace Messenger.Pages
 
         private void TimerCloseCalling_Tick(object? sender, EventArgs e)
         {
-
             MainWindow.MessengerLiblaryCalls.CloseAudioCall(user.Id, callerUser.Id);
             timerCloseCalling.Stop();
             timerCloseAudioPage.Start();
@@ -176,11 +175,8 @@ namespace Messenger.Pages
                             waveOutSound.Stop();
                             waveOutSound.Dispose();
                             Dispatcher.BeginInvoke(() => statusLabel.Content = Application.Current.FindResource("m_callIsRun")?.ToString());
-
-
                             receiveThread = new System.Threading.Thread(() =>
                             {
-
                                 while (true)
                                 {
                                     try
@@ -225,10 +221,8 @@ namespace Messenger.Pages
                             });
                             senderThread.Start();
                             firstRun = false;
-
                         }
                     }
-
                 }
                 catch
                 {

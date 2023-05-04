@@ -1,35 +1,22 @@
 ﻿using MessengerLiblary;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using Messenger.Pages;
 using System.Windows.Forms;
-using System.Runtime.CompilerServices;
-using System.Windows.Resources;
-using System.Net.Sockets;
-using MessageBox = System.Windows.MessageBox;
 using Application = System.Windows.Application;
 
 namespace Messenger
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private DispatcherTimer timerUpdateFriends = new DispatcherTimer();
@@ -40,15 +27,17 @@ namespace Messenger
         private List<Friend> friends = new List<Friend>();
         private User user = null;
         private User receiveUser = null;
-        private NotifyIcon notify = new NotifyIcon();
-        private int callFromId = 0;
-        private Mutex mutex = new Mutex();
-        private string times = string.Empty;
-        private bool endWaitingChangedChats = true;
-        private bool firstStartupToReceiveMessage = true;
-        public static int CallerInId = 0;
         public MessengerLiblary.MessengerLiblary MessengerLiblary = new MessengerLiblary.MessengerLiblary();
         public static MessengerCallsLiblary MessengerLiblaryCalls = new MessengerCallsLiblary();
+
+        private NotifyIcon notify = new NotifyIcon();
+        private Mutex mutex = new Mutex();
+
+        private int callFromId = 0; //id человека кому звонят
+        public static int CallerInId = 0; //id человека который звонит
+        private string times = string.Empty; //последнее время прихода сообщение
+        private bool endWaitingChangedChats = true; //таймер на смену чата, что бь не так быстро переключаться между чатами
+        private bool firstStartupToReceiveMessage = true; //первый запуск приложение, сделано что бь не приходило первое сообщение из таблицы а токо новое
 
         public MainWindow(User user)
         {
@@ -73,8 +62,6 @@ namespace Messenger
             timerUpdateMessages.Interval = TimeSpan.FromSeconds(1);
             timerUpdateMessages.Tick += TimerUpdateChat_Tick;
             timerUpdateMessages.Start();
-           
-
         }
 
         #region Timer
@@ -135,7 +122,6 @@ namespace Messenger
                 mutex.ReleaseMutex();
             }
         }
-
         #endregion
 
         #region Friends
@@ -303,10 +289,6 @@ namespace Messenger
         #region Funcs
         public async void SlowOpacity(Page page)
         {
-            //if (WindowState == WindowState.Minimized)
-            //{
-            //    WindowState = WindowState.Normal;
-            //}
             await Task.Factory.StartNew(() =>
             {
                 double opacity = 0;
@@ -381,13 +363,9 @@ namespace Messenger
         public Brush CheckOnlineFriend(bool isOnline)
         {
             if (isOnline)
-            {
                 return Brushes.GreenYellow;
-            }
             else
-            {
                 return Brushes.OrangeRed;
-            }
         }
         public ImageBrush GetImageBrushOnBytes(byte[] byteArray)
         {
@@ -408,7 +386,6 @@ namespace Messenger
             FriendListBox.Visibility = Visibility.Collapsed;
             RequestsListBox.Visibility = Visibility.Visible;
             UpdateRequestFriendList();
-
         }
         private void showFriends_Click(object sender, MouseButtonEventArgs e)
         {
@@ -421,8 +398,6 @@ namespace Messenger
             Border border = (Border)sender;
             MessengerLiblary.AddFriend(user.Id, MessengerLiblary.GetUserPerName(border.Tag.ToString()).Id);
             UpdateRequestFriendList();
-
-
         }
         private async void NoAcceptFriend_Click(object sender, MouseButtonEventArgs e)
         {

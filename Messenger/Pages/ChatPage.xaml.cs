@@ -41,23 +41,24 @@ namespace Messenger.Pages
 
         private DispatcherTimer timerUpdateChats = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(0.5) };
         private DispatcherTimer timerSendMessage = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(1.5) };
-        private bool boolTimerSendMessage = true;
-        private bool isRecording = false;
+
         private WaveIn _recorder;
         private WaveFileWriter _fileWriter;
-        private string _fileName;
-
-        private string times = "";
-        private int _voiceCreateFileId = 0;
-        private bool IsFirstStartUpReceiveMessage = true;
-        private int userId = 0;
-        private int receivedId = 0;
-        private int messagesFetch = 0;
-        private bool receiverOnline;
-
         public MessengerLiblary.MessengerLiblary MessengerLiblary = new MessengerLiblary.MessengerLiblary();
         public MessengerLiblary.MessengerLiblary MessengerLiblaryTimer = new MessengerLiblary.MessengerLiblary();
-        public MainWindow window;
+        public MainWindow window; //для отключение ui елементов при звонке
+
+        private bool boolTimerSendMessage = true; //отправка сообщение только раз в 1 секунду
+        private bool isRecording = false; //записываеться ли голосовое сообщение
+        private string _fileName; //имя файла для аудио сообщение
+        private string times = ""; //время отправкки последнего сообщение
+        private int _voiceCreateFileId = 0; //id для создание аудио файла
+        private bool IsFirstStartUpReceiveMessage = true; //проверка что бь не приходилл первое сообещние из таблицыы
+        private int messagesFetch = 0; //счетчик сколько получить следующих сообщение, при скролле
+        private int userId = 0;
+        private int receivedId = 0;
+        private bool receiverOnline;
+
         public ChatPage(User user, User receiveUser, MessengerCallsLiblary messengerLiblaryCalls,MainWindow window)
         {
             MessengerLiblary.Connect("127.0.0.1", 8000);
@@ -68,6 +69,7 @@ namespace Messenger.Pages
             userId = user.Id;
             receivedId = receiveUser.Id;
             receiverOnline = receiveUser.IsOnline;
+
             MainWindow.MessengerLiblaryCalls = messengerLiblaryCalls;
             InitializeComponent();
         }
@@ -151,8 +153,6 @@ namespace Messenger.Pages
                     timerSendMessage.Start();
                 }
             });
-
-
         }
         private async void buttonSendRarMessage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -429,7 +429,7 @@ namespace Messenger.Pages
                 }
                 else
                 {
-                    MessageBox.Show("eror - text message");
+                    MessageBox.Show("Erorr - text message");
                 }
             }
         }
@@ -438,7 +438,6 @@ namespace Messenger.Pages
         #region Loading and Unloading and Scroll changed
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-
             await Task.Run(async() =>
             {
                 await GetMessages();
