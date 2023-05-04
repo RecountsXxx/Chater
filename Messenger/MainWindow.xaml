@@ -48,7 +48,7 @@
                 <ColumnDefinition Width="35"/>
             </Grid.ColumnDefinitions>
             <Label Margin="8,0,0,0" FontFamily="Cascadia code" Foreground="WhiteSmoke" Content="{DynamicResource m_Title}"></Label>
-            <Border x:Name="mainPageBorder" HorizontalAlignment="Left" Style="{StaticResource BorderTriggerStyle}" MouseLeftButtonDown="MainPage_Click" CornerRadius="10" Background="{StaticResource PrimaryBackgroundColor}" BorderBrush="AliceBlue" BorderThickness="2" Width="130" Margin="352,-2,0,2">
+            <Border x:Name="mainPageBorder" HorizontalAlignment="Left" Style="{StaticResource BorderTriggerStyle}" MouseLeftButtonDown="MainPage_Click" CornerRadius="10" Background="{StaticResource PrimaryBackgroundColor}" BorderBrush="AliceBlue" BorderThickness="2" Width="130" Margin="352,0,0,0">
                 <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Cascadia code" Foreground="{StaticResource PrimaryTextColor}" Content="{DynamicResource m_mainPage}"/>
             </Border>
             <Button Grid.Column="3" x:Name="btnClose" Style="{StaticResource IconButtonsStyle}" Content="{DynamicResource close}" Click="btnClose_Click">

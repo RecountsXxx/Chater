@@ -1,33 +1,16 @@
-﻿
-using Microsoft.VisualBasic.Devices;
-using Microsoft.Windows.Themes;
-using NAudio.Wave;
+﻿using NAudio.Wave;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Media;
+using System.Numerics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using static MessengerLiblary.Message;
 
 namespace Messenger.Styles
 {
-    /// <summary>
-    /// Логика взаимодействия для ChatMessageTemplate.xaml
-    /// </summary>
     public partial class ChatMessageTemplate : UserControl
     {
         public int Id { get; set; }
@@ -104,8 +87,12 @@ namespace Messenger.Styles
                 videoMessage.Visibility = Visibility.Collapsed;
                 ZipMessage.Visibility = Visibility.Collapsed;
 
-                if (audioMessageElement.NaturalDuration.HasTimeSpan)
-                textBoxVoiceDuration.Text = "Duration: " + audioMessageElement.NaturalDuration.TimeSpan.ToString("mm':'ss");
+
+                using (var audioFile = new AudioFileReader(Source))
+                {
+                    TimeSpan duration = audioFile.TotalTime;
+                    textBoxVoiceDuration.Text = "Duration: " + duration.ToString("mm':'ss");
+                }
                 textBoxVoice.Text = Date;
                 if (aligment == MessageSide.Right)
                 {
@@ -216,6 +203,7 @@ namespace Messenger.Styles
                 }
             }
         }
+
         #region Video
         private void MediaElement_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -248,11 +236,8 @@ namespace Messenger.Styles
         #region Audio
         private void StartAudioMessage_Click(object sender, MouseButtonEventArgs e)
         {
-
-
             if (IsPlayed)
             {
-
                 audioMessageElement.Stop();
                 audioMessageElement.Close();
                 IsPlayed = false;

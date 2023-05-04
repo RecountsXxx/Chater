@@ -1,7 +1,5 @@
 ﻿using MessengerLiblary;
-using Microsoft.Win32;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,32 +8,25 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using NAudio.Wave;
-using System.Drawing;
 using System.IO;
-using Brushes = System.Windows.Media.Brushes;
 using Messenger.Styles;
-using System.Windows.Shapes;
-using System.Windows.Forms;
 using Message = MessengerLiblary.Message;
 using ListBox = System.Windows.Controls.ListBox;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
-using Microsoft.Windows.Themes;
-using static System.Net.Mime.MediaTypeNames;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows.Navigation;
-using System.Runtime.InteropServices;
 using Application = System.Windows.Application;
 
 namespace Messenger.Pages
 {
     public partial class ChatPage : Page
     {
+        //вот тут когда вообще ещё сообщений нету, нужно отправить всем по 1 сообещние и только 2 прийдут
+        //и после звонка типо там object null
+
         private User user = null;
         private User receiveUser = null;
 
