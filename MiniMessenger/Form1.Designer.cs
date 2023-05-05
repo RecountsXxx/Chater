@@ -36,7 +36,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.closeBtn = new System.Windows.Forms.Button();
             this.pathDBbutton = new System.Windows.Forms.Button();
+            this.createDBBtn = new System.Windows.Forms.Button();
+            this.nameDbTextBox = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.portNumeric)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // startBtn
@@ -114,19 +119,59 @@
             // 
             // pathDBbutton
             // 
-            this.pathDBbutton.Location = new System.Drawing.Point(416, 12);
+            this.pathDBbutton.Location = new System.Drawing.Point(6, 36);
             this.pathDBbutton.Name = "pathDBbutton";
             this.pathDBbutton.Size = new System.Drawing.Size(94, 29);
             this.pathDBbutton.TabIndex = 7;
             this.pathDBbutton.Text = "Path DB";
             this.pathDBbutton.UseVisualStyleBackColor = true;
+            this.pathDBbutton.Click += new System.EventHandler(this.pathDBbutton_Click);
+            // 
+            // createDBBtn
+            // 
+            this.createDBBtn.Location = new System.Drawing.Point(106, 35);
+            this.createDBBtn.Name = "createDBBtn";
+            this.createDBBtn.Size = new System.Drawing.Size(94, 29);
+            this.createDBBtn.TabIndex = 8;
+            this.createDBBtn.Text = "Create DB";
+            this.createDBBtn.UseVisualStyleBackColor = true;
+            this.createDBBtn.Click += new System.EventHandler(this.createDBBtn_Click);
+            // 
+            // nameDbTextBox
+            // 
+            this.nameDbTextBox.Location = new System.Drawing.Point(206, 37);
+            this.nameDbTextBox.Name = "nameDbTextBox";
+            this.nameDbTextBox.Size = new System.Drawing.Size(125, 27);
+            this.nameDbTextBox.TabIndex = 9;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(206, 14);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(73, 20);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Name DB";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.pathDBbutton);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.createDBBtn);
+            this.groupBox1.Controls.Add(this.nameDbTextBox);
+            this.groupBox1.Location = new System.Drawing.Point(432, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(343, 70);
+            this.groupBox1.TabIndex = 11;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Creating DB";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(797, 450);
-            this.Controls.Add(this.pathDBbutton);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.closeBtn);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -137,6 +182,8 @@
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.portNumeric)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -152,5 +199,9 @@
         private Label label2;
         private Button closeBtn;
         private Button pathDBbutton;
+        private Button createDBBtn;
+        private TextBox nameDbTextBox;
+        private Label label3;
+        private GroupBox groupBox1;
     }
 }

@@ -5,6 +5,8 @@ create table UserTable(
 [Avatar] nvarchar(100) null,
 [IsOnline] bit null,
 [LastReceived] datetime null,
+[IpAddress] nvarchar(20) NULL,
+[Port] int NULL,
 );
 
 create table MessageTable(

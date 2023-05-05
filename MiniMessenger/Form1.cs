@@ -15,22 +15,44 @@ namespace MiniMessenger
 {
     public partial class Form1 : Form
     {
-        private const string sqlString = "Data Source=DESKTOP-PGENPK7\\SQLEXPRESS01;Initial Catalog=MessengerUsers;Integrated Security=True;";
+        private string sqlString = "Data Source=DESKTOP-PGENPK7\\SQLEXPRESS01;Initial Catalog=MessengerUsers;Integrated Security=True;";
         public string ServerDiskPath = "C://MessengerServer/";
         public TcpListener listener = null;
         public Mutex mutex = new Mutex();
-
+        public bool serverStopped = false;
         public Dictionary<int, DateTime> lastMessagesClient = new Dictionary<int, DateTime>();
         public System.Windows.Forms.Timer timerOnline = new System.Windows.Forms.Timer();
 
+        public string pathDb = string.Empty;
+        public string nameDb = string.Empty;
+       
+
         public Form1()
-        {
+        {     
+            //исправить путь бд
             InitializeComponent();
             startBtn_Click(null, null);
+
+            if (!File.Exists("DbPath.txt"))
+            {
+                using (StreamWriter writer = new StreamWriter("DbPath.txt", false))
+                {
+                    writer.WriteLine(sqlString);
+                }
+            }
+            else
+            {
+                using(StreamReader reader = new StreamReader("DbPath.txt"))
+                {
+                    sqlString = reader.ReadLine();
+                }
+            }
 
             timerOnline.Interval = 1000;
             timerOnline.Tick += TimerOnline_Tick;
             timerOnline.Start();
+
+          
         }
 
         private void TimerOnline_Tick(object? sender, EventArgs e)
@@ -43,8 +65,53 @@ namespace MiniMessenger
                 }
             }
         }
+
+        private void createDBBtn_Click(object sender, EventArgs e)
+        {
+            if(nameDbTextBox.Text.Length > 2)
+            {
+                nameDb = nameDbTextBox.Text;
+                pathDb = pathDb + nameDb + ".mdf";
+
+                using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;Integrated Security=True"))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand($"CREATE DATABASE {nameDb} ON PRIMARY (NAME={nameDb}_Data, FILENAME='{pathDb}')", connection);
+                    command.ExecuteNonQuery();
+                }
+                sqlString = $"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={pathDb};Integrated Security=True";
+                using (StreamWriter writer = new StreamWriter("DbPath.txt", false))
+                {
+                    writer.WriteLine(sqlString);
+                }
+
+                using (SqlConnection connection = new SqlConnection(sqlString))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand($"create table UserTable(\r\n[Id] int not null primary key identity(1,1),\r\n[Name] nvarchar(100) null,\r\n[Password] nvarchar(50) null,\r\n[Avatar] nvarchar(100) null,\r\n[IsOnline] bit null,\r\n[LastReceived] datetime null,\r\n[IpAddress] nvarchar(20) NULL,\r\n[Port] int NULL,\r\n);\r\n\r\ncreate table MessageTable(\r\n[Id] int not null primary key identity(1,1),\r\n[Text] nvarchar(max) null,\r\n[TimeStamp] datetime not null,\r\n[SenderId] int not null foreign key references UserTable([Id]),\r\n[ReceivedId] int not null foreign key references UserTable([Id]),\r\n[VoiceMessage] nvarchar(100) null,\r\n[ImageMessage] nvarchar(100) null,\r\n[VideoMessage] nvarchar(100) null,\r\n[ZipMessage] nvarchar(100) null,\r\n);\r\n\r\ncreate table FriendTable(\r\n[Id] int not null,\r\n[UserId] int null,\r\n);\r\n\r\ncreate table BlockedUsersTable(\r\n[UserId] int not null,\r\n[BlockedId] int null,\r\n);\r\n\r\ncreate table RequestedUsersTable(\r\n[UserId] int not null,\r\n[ToRequestsId] int null,\r\n);\r\n\r\ncreate table BusyIpAndPorts(\r\n[Id] int not null identity(1,1) primary key,\r\n[IpAdress] nvarchar(20) null,\r\n[Port] int null,\r\n);\r\n\r\ncreate table NotificationQueue(\r\n[Id] int not null primary key identity(1,1),\r\n[MessageId] int foreign key references MessageTable([Id]),\r\n);\r\n", connection);
+                    command.ExecuteNonQuery();
+
+                    command = new SqlCommand($"CREATE TRIGGER trg_MessageTable_NotificationQueue\r\nON MessageTable\r\nAFTER INSERT\r\nAS\r\nBEGIN\r\n    INSERT INTO NotificationQueue (MessageId)\r\n    SELECT id\r\n    FROM inserted;\r\nEND;",connection);
+                    command.ExecuteNonQuery();
+                }
+
+
+            }
+        }
+        private void pathDBbutton_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folder = new FolderBrowserDialog();
+            if(folder.ShowDialog() == DialogResult.OK)
+            {
+                if(folder.SelectedPath.Length > 2)
+                {
+                    pathDb = folder.SelectedPath;
+                }
+            }
+        }
         private async void startBtn_Click(object sender, EventArgs e)
         {
+            serverStopped = false;
             closeBtn.Enabled = true;
             startBtn.Enabled = false;
 
@@ -54,17 +121,24 @@ namespace MiniMessenger
             consoleListBox.Items.Add("Server started!");
             await Task.Run(() =>
             {
+
                 while (true)
                 {
-                    TcpClient client = listener.AcceptTcpClient();
-                    Thread thread = new Thread(() => HandleClient(client));
-                    thread.Start();
+                    if (!serverStopped)
+                    {
+                        TcpClient client = listener.AcceptTcpClient();
+                        Thread thread = new Thread(() => HandleClient(client));
+                        thread.Start();
+                    }
+                    else
+                        break;
                     
                 }
             });
         }
         private void closeBtn_Click(object sender, EventArgs e)
         {
+            serverStopped = true;
             startBtn.Enabled = true;
             closeBtn.Enabled = false;
             consoleListBox.Items.Add("Server is stopped!");
