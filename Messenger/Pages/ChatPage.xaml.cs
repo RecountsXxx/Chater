@@ -85,7 +85,7 @@ namespace Messenger.Pages
                         {       
                             times = MessengerLiblaryTimer.CheckMessagesTime(userId, receivedId);
              
-                            if (!IsFirstStartUpReceiveMessage)
+                            if (!IsFirstStartUpReceiveMessage || chatListBox.Items.Count <= 1)
                             {
                                 await Dispatcher.BeginInvoke(() =>
                                 {
