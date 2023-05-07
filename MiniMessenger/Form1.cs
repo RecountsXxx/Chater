@@ -243,7 +243,6 @@ namespace MiniMessenger
                         string json = Encoding.UTF8.GetString(messageBuffer, 0, lenBuffer);
                         if (json != response)
                         {
-                            Invoke(new Action(() => { consoleListBox.Items.Add("OMG - " + json); }));
                             stream.Write(Encoding.UTF8.GetBytes(SendMessage(stream, json, format).Result.ToString()));
                         }
                     }

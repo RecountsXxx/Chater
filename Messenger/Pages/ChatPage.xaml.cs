@@ -568,10 +568,6 @@ namespace Messenger.Pages
                 MessageBox.Show("User is not online");
             }
         }
-        private void VideoCall_Click(object sender, MouseButtonEventArgs e)
-        {
-
-        }
         #endregion
 
     }

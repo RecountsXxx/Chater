@@ -46,11 +46,6 @@
                     <ImageBrush ImageSource="\Images\phone.png"></ImageBrush>
                 </Border.Background>
             </Border>
-            <Border MouseLeftButtonDown="VideoCall_Click" Style="{StaticResource BorderTriggerStyle}" Width="35" Height="35" Margin="490,5,69,5">
-                <Border.Background>
-                    <ImageBrush ImageSource="\Images\video.png"></ImageBrush>
-                </Border.Background>
-            </Border>
         </Grid>
 
         <Grid Background="{StaticResource SecundaryBackgroundColor}" x:Name="ChatListBoxGrid"  Grid.Row="1">
