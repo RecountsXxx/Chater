@@ -16,6 +16,7 @@ namespace MiniMessenger
     public partial class Form1 : Form
     {
         private string sqlString = "Data Source=DESKTOP-PGENPK7\\SQLEXPRESS01;Initial Catalog=MessengerUsers;Integrated Security=True;";
+        //свой путь для хранение сообщений и аватарок
         public string ServerDiskPath = "C://MessengerServer/";
         public TcpListener listener = null;
         public Mutex mutex = new Mutex();

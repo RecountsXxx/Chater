@@ -46,9 +46,9 @@
             // 
             // startBtn
             // 
-            this.startBtn.Location = new System.Drawing.Point(12, 12);
+            this.startBtn.Location = new System.Drawing.Point(12, 7);
             this.startBtn.Name = "startBtn";
-            this.startBtn.Size = new System.Drawing.Size(94, 29);
+            this.startBtn.Size = new System.Drawing.Size(94, 26);
             this.startBtn.TabIndex = 0;
             this.startBtn.Text = "Start server";
             this.startBtn.UseVisualStyleBackColor = true;
@@ -56,7 +56,7 @@
             // 
             // ipAdressTextBox
             // 
-            this.ipAdressTextBox.Location = new System.Drawing.Point(123, 32);
+            this.ipAdressTextBox.Location = new System.Drawing.Point(112, 23);
             this.ipAdressTextBox.Name = "ipAdressTextBox";
             this.ipAdressTextBox.Size = new System.Drawing.Size(125, 27);
             this.ipAdressTextBox.TabIndex = 1;
@@ -64,7 +64,7 @@
             // 
             // portNumeric
             // 
-            this.portNumeric.Location = new System.Drawing.Point(268, 32);
+            this.portNumeric.Location = new System.Drawing.Point(257, 23);
             this.portNumeric.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -91,7 +91,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(123, 9);
+            this.label1.Location = new System.Drawing.Point(112, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(64, 20);
             this.label1.TabIndex = 4;
@@ -100,7 +100,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(268, 9);
+            this.label2.Location = new System.Drawing.Point(257, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 20);
             this.label2.TabIndex = 5;
@@ -109,9 +109,9 @@
             // closeBtn
             // 
             this.closeBtn.Enabled = false;
-            this.closeBtn.Location = new System.Drawing.Point(12, 47);
+            this.closeBtn.Location = new System.Drawing.Point(12, 39);
             this.closeBtn.Name = "closeBtn";
-            this.closeBtn.Size = new System.Drawing.Size(94, 29);
+            this.closeBtn.Size = new System.Drawing.Size(94, 27);
             this.closeBtn.TabIndex = 6;
             this.closeBtn.Text = "Close server";
             this.closeBtn.UseVisualStyleBackColor = true;
@@ -119,7 +119,7 @@
             // 
             // pathDBbutton
             // 
-            this.pathDBbutton.Location = new System.Drawing.Point(6, 36);
+            this.pathDBbutton.Location = new System.Drawing.Point(6, 37);
             this.pathDBbutton.Name = "pathDBbutton";
             this.pathDBbutton.Size = new System.Drawing.Size(94, 29);
             this.pathDBbutton.TabIndex = 7;
@@ -129,7 +129,7 @@
             // 
             // createDBBtn
             // 
-            this.createDBBtn.Location = new System.Drawing.Point(106, 35);
+            this.createDBBtn.Location = new System.Drawing.Point(106, 36);
             this.createDBBtn.Name = "createDBBtn";
             this.createDBBtn.Size = new System.Drawing.Size(94, 29);
             this.createDBBtn.TabIndex = 8;
@@ -139,7 +139,7 @@
             // 
             // nameDbTextBox
             // 
-            this.nameDbTextBox.Location = new System.Drawing.Point(206, 37);
+            this.nameDbTextBox.Location = new System.Drawing.Point(206, 36);
             this.nameDbTextBox.Name = "nameDbTextBox";
             this.nameDbTextBox.Size = new System.Drawing.Size(125, 27);
             this.nameDbTextBox.TabIndex = 9;
@@ -147,7 +147,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(206, 14);
+            this.label3.Location = new System.Drawing.Point(206, 13);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 20);
             this.label3.TabIndex = 10;
@@ -159,9 +159,9 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.createDBBtn);
             this.groupBox1.Controls.Add(this.nameDbTextBox);
-            this.groupBox1.Location = new System.Drawing.Point(432, 12);
+            this.groupBox1.Location = new System.Drawing.Point(454, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(343, 70);
+            this.groupBox1.Size = new System.Drawing.Size(331, 73);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Creating DB";
