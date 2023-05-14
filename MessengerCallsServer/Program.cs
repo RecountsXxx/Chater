@@ -185,6 +185,7 @@ namespace MessengerCallsServer
                     allUsers.Remove(user);
                     user.client.Close();
                     Console.WriteLine(ex.Message);
+                    Thread.CurrentThread.Interrupt();
                     break;
                 }
             }

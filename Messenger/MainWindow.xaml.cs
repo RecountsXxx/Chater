@@ -174,6 +174,7 @@ namespace Messenger
                 int index = friends.IndexOf(friends.Where(x => x.Name == friends[FriendListBox.SelectedIndex].Name).FirstOrDefault());
                 friends.RemoveAt(index);
                 FriendListBox.Items.RemoveAt(index);
+                FramePage.Content = new MainPage();
             }
         }
         private void DeleteAllMesages_Click(object sender, RoutedEventArgs e)
@@ -193,6 +194,7 @@ namespace Messenger
                 int index = friends.IndexOf(friends.Where(x => x.Name == friends[FriendListBox.SelectedIndex].Name).FirstOrDefault());
                 friends.RemoveAt(index);
                 FriendListBox.Items.RemoveAt(index);
+                FramePage.Content = new MainPage();
             }
         }
         #endregion
